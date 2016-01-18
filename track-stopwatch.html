@@ -140,17 +140,19 @@
         }
       },
       render: function() {
-        var padTimer = function (val) {
-            if (val <= 99999) { val = ("000000"+val).slice(-6)}
-            return val;
+
+        var padTime = function (val) {
+          if(val < 10) {
+            return "0"+val;
+          }
+          return val;
         }
 
         var timeViewFilter = function (val) {
-            var paddedVal = padTimer(val);
-            while (/(\d+)(\d{2})/.test(paddedVal.toString())){
-              paddedVal = paddedVal.toString().replace(/(\d+)(\d{2})/, '$1'+':'+'$2');
-            }
-            return paddedVal;
+            var milliseconds = padTime(Math.floor((val) % 60));
+            var seconds = padTime(Math.floor((val / (60)) % 60));
+            var minutes = padTime(Math.floor((val/(60*60)) % 60));
+            return (minutes+':'+seconds+':'+milliseconds);
         }
 
         var currentTime = timeViewFilter(this.state.timeElapsed);

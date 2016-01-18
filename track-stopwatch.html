@@ -140,9 +140,6 @@
         }
       },
       render: function() {
-        var currentTime = this.state.timeElapsed;
-        var lapTime = this.state.lapTime ? this.state.lapTime : this.state.timeElapsed;
-
         var padTime = function (val) {
           if(val < 10) {
             return "0"+val;
@@ -163,8 +160,8 @@
               <h1>Stopwatch</h1>
             </div>
             <div className="stopWatchDisplay">
-              <div className="laptime">{timeViewFilter(lapTime)}</div>
-              <div className="currenttime">{timeViewFilter(currentTime)}</div>
+              <div className="laptime">{timeViewFilter(this.state.timeElapsed)}</div>
+              <div className="currenttime">{timeViewFilter(this.state.lapTime ? this.state.lapTime : this.state.timeElapsed)}</div>
             </div>
             <div className="stopWatchButtons">
               <div className="btn" onClick={this.startStopHandler}>

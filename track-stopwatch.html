@@ -140,6 +140,8 @@
         }
       },
       render: function() {
+        var currentTime = this.state.timeElapsed;
+        var lapTime = this.state.lapTime ? this.state.lapTime : this.state.timeElapsed;
 
         var padTime = function (val) {
           if(val < 10) {
@@ -155,18 +157,14 @@
             return (minutes+':'+seconds+':'+milliseconds);
         }
 
-        var currentTime = timeViewFilter(this.state.timeElapsed);
-        var lapTime = this.state.lapTime ? this.state.lapTime : this.state.timeElapsed;
-        lapTime = timeViewFilter(lapTime);
-
         return (
             <div className="stopWatchContainer">
             <div className="title">
               <h1>Stopwatch</h1>
             </div>
             <div className="stopWatchDisplay">
-              <div className="laptime">{lapTime}</div>
-              <div className="currenttime">{currentTime}</div>
+              <div className="laptime">{timeViewFilter(lapTime)}</div>
+              <div className="currenttime">{timeViewFilter(currentTime)}</div>
             </div>
             <div className="stopWatchButtons">
               <div className="btn" onClick={this.startStopHandler}>

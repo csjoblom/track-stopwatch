@@ -160,8 +160,8 @@
               <h1>Stopwatch</h1>
             </div>
             <div className="stopWatchDisplay">
-              <div className="laptime">{timeViewFilter(this.state.timeElapsed)}</div>
-              <div className="currenttime">{timeViewFilter(this.state.lapTime ? this.state.lapTime : this.state.timeElapsed)}</div>
+              <div className="laptime">{timeViewFilter(this.state.lapTime ? this.state.lapTime : this.state.timeElapsed)}</div>
+              <div className="currenttime">{timeViewFilter(this.state.timeElapsed)}</div>
             </div>
             <div className="stopWatchButtons">
               <div className="btn" onClick={this.startStopHandler}>

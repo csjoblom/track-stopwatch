@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Stopwatch</title>
+    <style>
+      .stopWatchContainer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 400px;
+        margin: auto;
+      }
+
+      .title {
+        background-color: #333333;
+        color: white;
+        text-align: center;
+        font-size: 32px;
+        p
+      }
+
+      .stopWatchDisplay {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        background-color: #999999;
+        color: #333333;
+      }
+
+      .laptime {
+      display: block;
+      text-align: right;
+      font-size: 32px;
+      }
+
+      .currenttime {
+      display: block;
+      text-align: center;
+      font-size: 48px;
+      }
+
+      .stopWatchButtons {
+        text-align: center;
+      }
+      .btn {
+        display: inline-block;
+        color: white;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border:1px solid #cfdcec;
+        overflow:hidden;
+        margin: 32px;
+
+        background: #4679BD;
+        box-shadow: 0 0 3px gray;
+
+      }
+      .btn a {
+        display:block;
+        float:left;
+        width:100%;
+        padding-top:50%;
+        padding-bottom:50%;
+        line-height:1em;
+        margin-top:-0.5em;
+
+        text-align:center;
+        color:#e2eaf3;
+        font-size:1.2em;
+        font-weight:bold;
+        text-decoration:none;
+      }
+    </style>
+
+    <script src="https://fb.me/react-0.14.6.js"></script>
+    <script src="https://fb.me/react-dom-0.14.6.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="stopWatch"></div>
+    <script type="text/babel">
+    var StopWatch = React.createClass({
+      getInitialState: function() {
+        return {
+            timeElapsed: 0,
+            lapTime: 0,
+            running: 0
+        };
+      },
+      tick: function() {
+        this.setState({timeElapsed: this.state.timeElapsed +1});
+      },
+      componentWillUnmount: function() {
+        if(this.state.running) {
+            clearInterval(this.interval);
+            this.setState({running: 0});
+        }
+      },
+      startStopHandler: function(){
+        if(this.state.running) {
+            clearInterval(this.interval);
+            this.setState({running: 0});
+        } else {
+            this.interval = setInterval(this.tick, 10);
+            this.setState({running: 1});
+        }
+      },
+      resetLapHandler: function(){
+        if(this.state.running) {
+            this.setState({
+                lapTime: this.state.timeElapsed,
+                timeElapsed: 0
+            });
+        } else {
+            this.setState({
+                lapTime: 0,
+                timeElapsed: 0
+            });
+        }
+      },
+      render: function() {
+        var padTimer = function (val) {
+            if (val <= 99999) { val = ("000000"+val).slice(-6)}
+            return val;
+        }
+
+        var timeViewFilter = function (val) {
+            var paddedVal = padTimer(val);
+            while (/(\d+)(\d{2})/.test(paddedVal.toString())){
+              paddedVal = paddedVal.toString().replace(/(\d+)(\d{2})/, '$1'+':'+'$2');
+            }
+            return paddedVal;
+        }
+
+        var currentTime = timeViewFilter(this.state.timeElapsed);
+        var lapTime = this.state.lapTime ? this.state.lapTime : this.state.timeElapsed;
+        lapTime = timeViewFilter(lapTime);
+
+        return (
+            <div className="stopWatchContainer">
+            <div className="title">Stopwatch</div>
+            <div className="stopWatchDisplay">
+              <div className="laptime">{lapTime}</div>
+              <div className="currenttime">{currentTime}</div>
+            </div>
+            <div className="stopWatchButtons">
+              <div className="btn" onClick={this.startStopHandler}>
+                <a>{this.state.running ? "Stop" : "Start"}</a>
+              </div>
+              <div className="btn" onClick={this.resetLapHandler}>
+                <a>{this.state.running ? "Lap" : "Reset"}</a>
+              </div>
+            </div>
+            </div>
+          );
+      }
+    });
+
+      ReactDOM.render(
+          <StopWatch />,
+          document.getElementById('stopWatch')
+        );
+    </script>
+  </body>
+</html>
